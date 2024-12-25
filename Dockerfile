@@ -14,7 +14,7 @@ COPY .mvn .mvn
 COPY mvnw.cmd mvnw.cmd
 COPY mvnw mvnw
 COPY pom.xml pom.xml
-COPY .m2/ /root/.m2/
+#COPY .m2/ /root/.m2/
 COPY ./src ./src
 
 ENTRYPOINT ["/app/entrypoint.sh"]
