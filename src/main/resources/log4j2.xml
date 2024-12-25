@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="APP_NAME">${spring:spring.application.name}</Property>
+        <Property name="APP_LOG_ROOT">/app/logs</Property>
+        <Property name="APP_LOG_CLASS">${APP_LOG_ROOT}/classes</Property>
+        <Property name="DATE_FORMAT">%d{yyyy-MM-dd HH:mm:ss}{GMT+0}</Property>
+        <Property name="LOG_PATTERN">%clr{[${DATE_FORMAT}]}{faint} [${APP_NAME} ,%X{traceId}, %X{spanId}] [%clr{%-5p}
+            %c{1}:%L] - %m%n
+        </Property>
+
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+        </Console>
+
+        <RollingFile name="MAIN.Debug">
+            <FileName>${APP_LOG_ROOT}/Debug.log</FileName>
+            <FilePattern>${APP_LOG_ROOT}/${date:yyyy-MM-dd}/Debug.log-%i.log.gz</FilePattern>`
+            <LevelRangeFilter>
+                <MinLevel>DEBUG</MinLevel>
+                <MaxLevel>DEBUG</MaxLevel>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </LevelRangeFilter>
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100">
+                <Delete basePath="${APP_LOG_CLASS}/MAIN" maxDepth="1">
+                    <IfFileName glob="/Debug.log-*.log.gz">
+                        <IfLastModified age="30d">
+                            <IfAny>
+                                <IfAccumulatedFileSize exceeds="2GB"/>
+                                <IfAccumulatedFileCount exceeds="10"/>
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="MAIN.INFO">
+            <FileName>${APP_LOG_ROOT}/INFO.log</FileName>
+            <FilePattern>${APP_LOG_ROOT}/${date:yyyy-MM-dd}/INFO.log-%i.log.gz</FilePattern>
+            <LevelRangeFilter>
+                <MinLevel>INFO</MinLevel>
+                <MaxLevel>INFO</MaxLevel>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </LevelRangeFilter>
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="5MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100">
+                <Delete basePath="${APP_LOG_CLASS}/MAIN" maxDepth="1">
+                    <IfFileName glob="/INFO.log-*.log.gz">
+                        <IfLastModified age="30d">
+                            <IfAny>
+                                <IfAccumulatedFileSize exceeds="2GB"/>
+                                <IfAccumulatedFileCount exceeds="10"/>
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="MAIN.WARN">
+            <FileName>${APP_LOG_ROOT}/WARN.log</FileName>
+            <FilePattern>${APP_LOG_ROOT}/${date:yyyy-MM-dd}/WARN.log-%i.log.gz</FilePattern>
+            <LevelRangeFilter>
+                <MinLevel>WARN</MinLevel>
+                <MaxLevel>WARN</MaxLevel>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </LevelRangeFilter>
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="5MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100">
+                <Delete basePath="${APP_LOG_CLASS}/MAIN" maxDepth="1">
+                    <IfFileName glob="/WARN.log-*.log.gz">
+                        <IfLastModified age="30d">
+                            <IfAny>
+                                <IfAccumulatedFileSize exceeds="2GB"/>
+                                <IfAccumulatedFileCount exceeds="10"/>
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="MAIN.ERROR">
+            <FileName>${APP_LOG_ROOT}/ERROR.log</FileName>
+            <FilePattern>${APP_LOG_ROOT}/${date:yyyy-MM-dd}/ERROR.log-%i.log.gz</FilePattern>
+            <LevelRangeFilter>
+                <MinLevel>ERROR</MinLevel>
+                <MaxLevel>ERROR</MaxLevel>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </LevelRangeFilter>
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="5MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100">
+                <Delete basePath="${APP_LOG_CLASS}/MAIN" maxDepth="1">
+                    <IfFileName glob="/ERROR.log-*.log.gz">
+                        <IfLastModified age="30d">
+                            <IfAny>
+                                <IfAccumulatedFileSize exceeds="2GB"/>
+                                <IfAccumulatedFileCount exceeds="10"/>
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="MAIN.FATAL">
+            <FileName>${APP_LOG_ROOT}/FATAL.log</FileName>
+            <FilePattern>${APP_LOG_ROOT}/${date:yyyy-MM-dd}/FATAL.log-%i.log.gz</FilePattern>
+            <LevelRangeFilter>
+                <MinLevel>FATAL</MinLevel>
+                <MaxLevel>FATAL</MaxLevel>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </LevelRangeFilter>
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="5MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100">
+                <Delete basePath="${APP_LOG_CLASS}/MAIN" maxDepth="1">
+                    <IfFileName glob="/FATAL.log-*.log.gz">
+                        <IfLastModified age="30d">
+                            <IfAny>
+                                <IfAccumulatedFileSize exceeds="2GB"/>
+                                <IfAccumulatedFileCount exceeds="10"/>
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="MAIN.Debug"/>
+            <AppenderRef ref="MAIN.INFO"/>
+            <AppenderRef ref="MAIN.WARN"/>
+            <AppenderRef ref="MAIN.ERROR"/>
+            <AppenderRef ref="MAIN.FATAL"/>
+        </Root>
+    </Loggers>
+</Configuration>
+

@@ -1,0 +1,59 @@
+#docker-compose.yaml
+services:
+  sql:
+    image: postgres:17.2-alpine3.21
+    container_name: sql
+    hostname: ${POSTGRES_HOST}
+    env_file: .env
+    networks:
+      - management-network
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  management:
+    build: .
+    container_name: management
+    hostname: management
+    restart: always
+    env_file: .env
+    networks:
+      - management-network
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    volumes:
+      - ./logs:/app/logs
+      - .m2/:/root/.m2
+    environment:
+      SPRING_DATASOURCE_DB: ${POSTGRES_DB}
+      SPRING_DATASOURCE_HOST: ${POSTGRES_HOST}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - sql
+    command: >
+      /bin/bash -c "
+      ./mvnw dependency:go-offline &&
+      ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n"
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./src
+          target: /app/src
+        - action: rebuild
+          path: ./pom.xml
+        - action: rebuild
+          path: ./Dockerfile
+
+volumes:
+  postgres:
+
+networks:
+  management-network:
+    driver: bridge
