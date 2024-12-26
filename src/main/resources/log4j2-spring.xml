@@ -8,6 +8,7 @@
         <Property name="LOG_PATTERN">%clr{[${DATE_FORMAT}]}{faint} [${APP_NAME} ,%X{traceId}, %X{spanId}] [%clr{%-5p}
             %c{1}:%L] - %m%n
         </Property>
+        <Property name="DISPLAY_LEVEL">${logging.level.display-level}</Property>
 
     </Properties>
     <Appenders>
@@ -159,7 +160,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Root level="INFO">
+        <Root level="${DISPLAY_LEVEL}">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="MAIN.Debug"/>
             <AppenderRef ref="MAIN.INFO"/>
