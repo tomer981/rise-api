@@ -1,6 +1,5 @@
 package smart.sage.riseapi.service;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -11,24 +10,28 @@ import smart.sage.riseapi.dto.ContactDTO;
 import smart.sage.riseapi.exception.ContactNotFoundException;
 import smart.sage.riseapi.model.Contact;
 import smart.sage.riseapi.repository.ContactRepository;
+import smart.sage.riseapi.service.interfaces.ContactService;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ContactServiceImpl {
+public class ContactServiceImpl implements ContactService {
     private final ContactRepository contactRepository;
 
+    @Override
     public void deleteContact(Long id) {
         contactRepository.deleteById(id);
     }
 
+    @Override
     public List<Contact> getContacts(Pageable page) {
         Page<Contact> pageContact = contactRepository.findAll(page);
         return pageContact.getContent();
     }
 
+    @Override
     public Contact saveContact(ContactDTO contactDTO) {
         Contact contact = Contact
                 .builder()
@@ -41,12 +44,14 @@ public class ContactServiceImpl {
 
     }
 
+    @Override
     public Contact findContact(Long id) {
         return contactRepository.findById(id)
                 .orElseThrow(() -> new ContactNotFoundException("Contact not found with id " + id));
     }
 
     @Transactional
+    @Override
     public Contact updateContact(Long id, ContactDTO contactDTO) {
         Contact contact = this.findContact(id);
         contact.setFirstName(contactDTO.firstName());
@@ -56,6 +61,7 @@ public class ContactServiceImpl {
         return contactRepository.save(contact);
     }
 
+    @Override
     public Contact searchContacts(ContactDTO contactDTO) {
         return contactRepository.findByFirstNameContainingOrLastNameContainingOrPhoneNumberContainingOrAddressContaining(
                 contactDTO.firstName(),

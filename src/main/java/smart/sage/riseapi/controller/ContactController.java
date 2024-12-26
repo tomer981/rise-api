@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import smart.sage.riseapi.dto.ContactDTO;
 import smart.sage.riseapi.model.Contact;
-import smart.sage.riseapi.service.ContactServiceImpl;
+import smart.sage.riseapi.service.interfaces.ContactService;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 @Tag(name = "Contact Rest API", description = "")
 public class ContactController {
-    private final ContactServiceImpl contactService;
+    private final ContactService contactService;
 
     @GetMapping
     public ResponseEntity<List<Contact>> getContacts(@ParameterObject Pageable pageable) {

@@ -137,3 +137,4 @@ fabric.properties
 
 /.m2/
 /.mvn/
+/.env
