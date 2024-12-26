@@ -41,7 +41,6 @@ public class ContactServiceImpl implements ContactService {
                 .address(contactDTO.address())
                 .build();
         return contactRepository.save(contact);
-
     }
 
     @Override
