@@ -49,15 +49,12 @@ class RiseApiApplicationTests {
 
     @Test
     void testGetContacts() throws Exception {
-        // Given
         List<Contact> contacts = List.of(
                 new Contact(1L, "tomer", "Avivi", "0526172173", "tel aviv")
         );
 
-        // When
         Mockito.when(contactService.getContacts(any(Pageable.class))).thenReturn(contacts);
 
-        // Then
         mockMvc.perform(get("/api/v1/contacts"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -67,14 +64,11 @@ class RiseApiApplicationTests {
 
     @Test
     void testSaveContact() throws Exception {
-        // Given: Create the expected saved contact
         Contact savedContact = new Contact(1L, "Tomer", "Avivi", "1234567890", "tel aviv");
 
-        // When: Mock the service behavior
         Mockito.when(contactService.saveContact(any(ContactDTO.class)))
                 .thenReturn(savedContact);
 
-        // Then: Perform the POST request and verify
         mockMvc.perform(post("/api/v1/contacts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstName\":\"Tomer\",\"lastName\":\"Avivi\",\"phoneNumber\":\"1234567890\",\"address\":\"tel aviv\"}")
@@ -89,25 +83,20 @@ class RiseApiApplicationTests {
 
     @Test
     void testDeleteContact() throws Exception {
-        // Given
         Mockito.doNothing().when(contactService).deleteContact(anyLong());
 
-        // When & Then
         mockMvc.perform(delete("/api/v1/contacts/{id}", 1L))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isNoContent()); // 204 No Content
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
     @Test
     void testUpdateContact() throws Exception {
-        // Given: Prepare the updated contact details and mock the service method
-        ContactDTO updatedContactDTO = new ContactDTO("Tomer", "Updated", "0987654321", "Updated Address");
         Contact updatedContact = new Contact(1L, "Tomer", "Updated", "0987654321", "Updated Address");
 
         Mockito.when(contactService.updateContact(anyLong(), any(ContactDTO.class)))
                 .thenReturn(updatedContact);
 
-        // When: Perform the update request
         mockMvc.perform(put("/api/v1/contacts/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstName\":\"Tomer\",\"lastName\":\"Updated\",\"phoneNumber\":\"0987654321\",\"address\":\"Updated Address\"}")
@@ -122,14 +111,11 @@ class RiseApiApplicationTests {
 
     @Test
     void testSearchContacts() throws Exception {
-        // Given: A search DTO and mock the service method
-        ContactDTO contactDTO = new ContactDTO("Tomer", "Avivi", "0526172173", "Tel Aviv");
         Contact foundContact = new Contact(1L, "Tomer", "Avivi", "0526172173", "Tel Aviv");
 
         Mockito.when(contactService.searchContacts(any(ContactDTO.class)))
                 .thenReturn(foundContact);
 
-        // When: Perform the search request
         mockMvc.perform(post("/api/v1/contacts/search")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstName\":\"Tomer\",\"lastName\":\"Avivi\",\"phoneNumber\":\"0526172173\",\"address\":\"Tel Aviv\"}")
