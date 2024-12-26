@@ -47,6 +47,11 @@ class RiseApiApplicationTests {
         contactRepository.save(new Contact(null, "tomer", "Avivi", "0526172173", "tel aviv"));
     }
 
+    @AfterEach
+    void tearDown() {
+        contactRepository.deleteAll();
+    }
+
     @Test
     void testGetContacts() throws Exception {
         List<Contact> contacts = List.of(
